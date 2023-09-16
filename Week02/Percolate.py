@@ -3,15 +3,20 @@ import math
 import random
 import timeit
 
-def simulate(n, t):    
+# Weighted Quick Union 방식으로 n개의 객체에 대해 t번 시뮬레이션하는 함수
+def simulate(n, t):
+
+    # WQU 연산 (1) - 특정 객체 i의 root를 반환하는 연산    
     def root(i):
         nonlocal ids
         while i != ids[i]: i = ids[i]
         return i
 
+    # WQU 연산 (2) - 특정 객체 p와 q가 하나의 connected component 내에 속하는 지를 반환하는 연산
     def connected(p, q):
         return root(p) == root(q)
 
+    # WQU 연산 (3) - 특정 객체 p가 속한 트리와 q가 속한 트리를 합치는 연산
     def union(p, q):    
         id1, id2 = root(p), root(q)
         if id1 == id2: return
@@ -22,28 +27,32 @@ def simulate(n, t):
             ids[id2] = id1
             size[id1] += size[id2]
     
-    p = []
 
+    results = []    # 각 시뮬레이션 결과를 저장하는 리스트 
+
+    # Percolation 시뮬레이션 t회 진행
     for _ in range(t):
-        ids = [i for i in range(n*n + 2)]
-        size = [1 for _ in range(n*n + 2)]
-        open_flag = [False for i in range(n*n + 2)]
+        ids = [i for i in range(n*n + 2)]               # 각 객체의 parent를 저장하는 리스트
+        size = [1 for _ in range(n*n + 2)]              # 각 객체를 root노드로 보았을 때 트리의 크기를 저장하는 리스트
+        open_flag = [False for i in range(n*n + 2)]     # 각 객체의 상태(열림, 닫힘)를 저장하는 리스트
 
-        open_flag[n*n] = True
-        open_flag[n*n + 1] = True
+        open_flag[n*n] = True                           # "가상 객체1"의 상태값(열림) 초기화
+        open_flag[n*n + 1] = True                       # "가상 객체2"의 상태값(열림) 초기화
 
-        indicesToOpen = [i for i in range(n*n)]
-        random.shuffle(indicesToOpen)
+        indicesToOpen = [i for i in range(n*n)]         # 0 ~ N*N-1 의 값들을 임의로 섞어서 저장하는 리스트
+        random.shuffle(indicesToOpen)                   # 셔플 수행
 
         for new_open in indicesToOpen:
-            if open_flag[new_open] == False:
+            if open_flag[new_open] == False:        # 새로 열림을 수행한 노드의 open값이 False이면 객체 추가 진행
                 open_flag[new_open] = True
 
+                # 새로 open한 객체의 위, 아래를 확인하여 union을 수행하는 부분
                 if new_open - n >= 0 and open_flag[new_open - n]:
                     union(new_open - n, new_open)
                 if new_open + n < n*n and open_flag[new_open + n]:
                     union(new_open, new_open + n)
 
+                # 새로 open한 객체의 좌, 우를 확인하여 union을 수행하는 부분
                 if new_open % n == 0:
                     if new_open + 1 < n*n and open_flag[new_open + 1]:
                         union(new_open, new_open + 1)
@@ -56,22 +65,29 @@ def simulate(n, t):
                     if new_open + 1 < n*n and open_flag[new_open + 1]:
                         union(new_open, new_open + 1)
 
+                # 새로 open한 객체가 1행에 속할 때, "가상객체1"와 union을 수행하는 부분
                 if new_open < n:
                     union(new_open, n*n)
+
+                # 새로 open한 객체가 N행에 속할 때, "가상객체2"와 union을 수행하는 부분   
                 if new_open >= n*(n-1):
                     union(new_open, n*n + 1)
 
+                # 가상 객체 간 연결이 True이면 객체 추가 종료
                 if connected(n*n, n*n + 1) == True:
                     break
 
-        open_count = 0
+
+        open_count = 0      # 1회의 시뮬레이션에서 percolation이 될때까지 open한 객체의 수
+
+        # 현 시뮬레이션에서 open한 객체의 수를 count하는 부분
         for i in range(n*n):
             if open_flag[i] == True:
                 open_count += 1
         
-        p.append(open_count/(n*n))
+        results.append(open_count/(n*n))    # result에 현재 시뮬레이션의 결과를 추가하는 부분
 
-    return statistics.mean(p), statistics.stdev(p)
+    return statistics.mean(results), statistics.stdev(results)  # t회의 시뮬레이션 결과에 대한 평균, 표준편차 값을 반환하는 부분
 
 
 '''
