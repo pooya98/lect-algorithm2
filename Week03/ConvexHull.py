@@ -21,7 +21,7 @@ def grahamScan(points):
                 start_point = point
 
 
-    # step2. 각 지점의 (인덱스, 각) 튜플 구하기
+    # step2. 각 지점의 (인덱스, 각, 거리) 튜플 구하기
     angle_list = []
 
     for index in range(len(points)):
@@ -31,7 +31,7 @@ def grahamScan(points):
         angle_list.append((index, angle, dist))
 
     
-    # step3. 각를 기준으로 점 정렬하기
+    # step3. 각과 거리(1순위-각, 2순위-거리)를 기준으로 점 정렬하기
     sorted_angle_list = sorted(angle_list, key = lambda p: (p[1], p[2]))
 
     # step4. convex hull에 포함하는 점 찾아 추가하기
@@ -42,11 +42,12 @@ def grahamScan(points):
 
         while True:
             if len(result) > 1:
-                i = result[-2]
-                j = result[-1]
+                i = result[-2]  # 2회 전에 추가된 점
+                j = result[-1]  # 1회 전에 추가된 점
 
                 det = (j[0] - i[0])*(k[1] - i[1]) - (j[1] - i[1])*(k[0] - i[0])
 
+                # 오목한 점을 형성하는 정점을 모두 삭제
                 if det > 0:
                     break
                 else:
@@ -62,8 +63,8 @@ def grahamScan(points):
 
     while True:
         if len(result) > 1:
-            i = result[-2]
-            j = result[-1]
+            i = result[-2]  # 끝에서 2번째 추가된 점   
+            j = result[-1]  # 끝에서 1번째 추가된 점
 
             det = (j[0] - i[0])*(k[1] - i[1]) - (j[1] - i[1])*(k[0] - i[0])
 
