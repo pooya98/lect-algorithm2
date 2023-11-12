@@ -47,6 +47,7 @@ class DFS:
                 if not self.visited[w]: 
                     recur(w)
                     self.fromVertex[w] = v
+
         assert(isinstance(g, Digraph) and s>=0 and s<g.V)
         self.g, self.s = g, s
         self.visited = [False for _ in range(g.V)]
@@ -104,6 +105,7 @@ class BFS:
         queue.put(s)        
         self.visited[s] = True
         self.distance[s] = 0
+        
         while queue.qsize() > 0:         
             v = queue.get()            
             for w in g.adj[v]:
