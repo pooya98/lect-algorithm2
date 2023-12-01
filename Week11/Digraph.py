@@ -383,7 +383,7 @@ def outcast(wordNet, wordFileName):
 
 
 if __name__ == "__main__":   
-    '''
+    
     # Unit test for sap()
     print('digraph6.txt')
     d6 = Digraph.digraphFromFile('digraph6.txt')
@@ -424,7 +424,7 @@ if __name__ == "__main__":
     else: print("fail")
     print(sap(d25, [13,23,24,17], [6,16,17,1]))  # (17,0)
     if sap(d25, [13,23,24,17], [6,16,17,1]) == (17,0): print("pass")
-    else: print("fail")'''
+    else: print("fail")
 
     '''
     # Unit test with WordNet
