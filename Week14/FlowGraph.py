@@ -269,7 +269,7 @@ class BaseballElimination:
             return True, result
         
         team_num = len(self.teams)
-        element_num = 2 + (team_num + 1) + (team_num - 1)*(team_num - 2) // 2
+        element_num = 2 + (team_num - 1) + (team_num - 1)*(team_num - 2) // 2
 
 
         # 시작 정점 -> 가장 마지막 index
@@ -446,7 +446,9 @@ if __name__ == "__main__":
         if ff8.inCut(v): print(v, end=' ')
     print()
     print()
-
+    '''
+    
+    '''
     g8m = FlowNetwork(8)
     g8m.addEdge(FlowEdge(0,1,6))
     g8m.addEdge(FlowEdge(0,2,1))
@@ -468,7 +470,9 @@ if __name__ == "__main__":
         if ff8m.inCut(v): print(v, end=' ')
     print()
     print()
+    '''
     
+    '''
     g4 = FlowNetwork.fromFile("flownet4.txt")    
     ff4 = FordFulkerson(g4, 0, g4.V-1)
     print("ff4.flow", ff4.flow) # 200.0
@@ -529,6 +533,8 @@ if __name__ == "__main__":
     print("ff8lions.g", ff8lions.g)
     print()
     
+    '''
+    '''
     g8dinos = FlowNetwork.fromFile("flownet8dinos.txt")
     ff8dinos = FordFulkerson(g8dinos, 0, g8dinos.V-1)
     print("ff8dinos.flow", ff8dinos.flow) #
@@ -538,7 +544,9 @@ if __name__ == "__main__":
     print()
     print("ff8dinos.g", ff8dinos.g)
     print()
+    '''
     
+    '''
     g12heros = FlowNetwork.fromFile("flownet12heros.txt")
     ff12heros = FordFulkerson(g12heros, 0, g12heros.V-1)
     print("ff12heros.flow", ff12heros.flow) #
@@ -550,6 +558,7 @@ if __name__ == "__main__":
     print()
     '''
 
+    
     # Unit test for BaseballElimination
     be4 = BaseballElimination("teams4.txt")
     print(be4)
@@ -611,3 +620,4 @@ if __name__ == "__main__":
     else: print("F ",end='')
     print()
     print()
+    

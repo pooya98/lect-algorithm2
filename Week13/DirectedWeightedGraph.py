@@ -215,6 +215,7 @@ Perform the topological sort on a DAG g, while detecing any cycle
     If a cycle is found, return False
     Otherwise, return list of vertices in reverse DFS postorder
 '''
+
 def topologicalSortWithCycleDetection(g):
     def recur(v):        
         visited[v] = True
@@ -317,7 +318,7 @@ class AcyclicSP(SP):
 class BellmanFordSP(SP):
     def __init__(self, g, s):
         super().__init__(g, s)
-        self.q = Queue(maxsize=g.V)
+        self.q = Queue(maxsize=g.V) 
         self.onQ = [False] * g.V
         self.q.put(s)        
         self.onQ[s] = True
@@ -338,6 +339,7 @@ class BellmanFordSP(SP):
 
 
 if __name__ == "__main__":
+    '''
     # Unit test for DirectedEdge
     e1 = DirectedEdge(2, 3, 0.1)
     e1a = DirectedEdge(2, 3, 0.1)
@@ -416,17 +418,21 @@ if __name__ == "__main__":
         else: print(i, "no path exists")    
     print()
     
+    '''
     g6n = EdgeWeightedDigraph.fromFile("wdigraph6n.txt")
+    '''
     print("BellmanFordSP on g6n")
     sp6n = BellmanFordSP(g6n, 0)
     for i in range(g6n.V):
         if sp6n.hasPathTo(i): print(i, sp6n.distTo[i], sp6n.pathTo(i))
         else: print(i, "no path exists")    
     print()
-
+    '''
+    
     print("DijkstraSP on g6n")
     sp6nD = DijkstraSP(g6n, 0)
     for i in range(g6n.V):
         if sp6nD.hasPathTo(i): print(i, sp6nD.distTo[i], sp6nD.pathTo(i))
         else: print(i, "no path exists")    
     print()
+    
